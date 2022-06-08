@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
 
 const app = express();
+app.use(express.json());
 
 const blogList = [
   {
@@ -29,12 +30,12 @@ const blogList = [
   }
 ];
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World sent from express backend');
-})
+app.get('/', (_req, res) => {
+  res.send('<h1>Hello World sent from express backend');
+});
 
-app.get('api/blog', (request, response) => {
-  response.json(blogList);
+app.get('/api/blog', (_req, res) => {
+  res.send(blogList);
 });
 
 const PORT = 3002;
