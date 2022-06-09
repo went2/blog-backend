@@ -4,7 +4,7 @@
   "description": "my blog backend",
   "main": "index.js",
   "scripts": {
-    "dev":"ts-node-dev index.ts",
+    "dev":"ts-node-dev src/index.ts",
     "start": "node build/index.js",
     "lint": "eslint --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
