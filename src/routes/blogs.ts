@@ -1,5 +1,6 @@
 import express from 'express';
 import blogService from '../services/blogService';
+import { parseUserInputBlogEntity } from '../utils';
 
 const router = express.Router();
 
@@ -18,13 +19,19 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const {title, abstract} = req.body;
-  const newBlog = blogService.addBlog(
-    title,
-    abstract
-  );
+  try {
+    const newBlogEntry = parseUserInputBlogEntity(req.body);
+    const { title, abstract, date } = newBlogEntry;
+    const addedBlog = blogService.addBlog({ title, abstract, date });
+    res.json(addedBlog);
+  } catch(error: unknown) {
+    let errorMessage = 'Something went wrong';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
   
-  res.json(newBlog);
 });
 
 export default router;

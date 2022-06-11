@@ -5,7 +5,8 @@
     "abstract": "from 2022-06-08",
     "createdAt": 1519211809934,
     "views": 2,
-    "words": 34
+    "words": 34,
+    "date": "2022-04-12"
   },
   {
     "id": 2,
@@ -13,7 +14,8 @@
     "abstract": "design",
     "createdAt": 1519211839934,
     "views": 1,
-    "words": 34
+    "words": 34,
+    "date": "2021-03-12"
   },
   {
     "id": 3,
@@ -21,6 +23,7 @@
     "abstract": "exciting",
     "createdAt": 1519222809934,
     "views": 0,
-    "words": 45
+    "words": 45,
+    "date": "2019-03-12"
   }
 ]

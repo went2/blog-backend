@@ -1,5 +1,5 @@
 import blogList from '../../data/blogList.json';
-import { IBlogItem } from '../types/blogs';
+import { IBlogItem, IUserInputBlogItem } from '../types/blogs';
 
 let blogs: IBlogItem[] = blogList;
 
@@ -12,14 +12,11 @@ const getBlogById = (id:number): IBlogItem | undefined => {
   return result;
 };
 
-const addBlog = (
-    title: string, abstract: string
-  ) => {
+const addBlog = (newBlogItem: IUserInputBlogItem) => {
   const newBlogEntry = {
     id: Math.max(...blogs.map(d=>d.id)) + 1,
-    title,
-    abstract,
-    createdAt: Date.now()
+    createdAt: Date.now(),
+    ...newBlogItem
   };
   
   blogs = [...blogs, newBlogEntry];
