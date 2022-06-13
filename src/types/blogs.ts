@@ -3,9 +3,6 @@ export interface IBlogItem {
   title: string;
   abstract: string;
   date: string;
-  views?: number;
-  words?: number;
-  createdAt: number;
 }
 
-export type IUserInputBlogItem = Omit<IBlogItem, 'id'| 'views' | 'words' | 'createdAt'>;
+export type IUserInputBlogItem = Omit<IBlogItem, 'id'>;

@@ -1,9 +1,11 @@
 import express, { RequestHandler } from 'express';
 import blogsRouter from './routes/blogs';
-import log from './modules/logger';
+import log from './middlewares/logger.middleware';
 
 const app = express();
 app.use(express.json());
+
+// integrate middleware
 app.use(log.requestLogger);
 
 app.get('/', (_req, res) => {
