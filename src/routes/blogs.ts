@@ -11,11 +11,18 @@ router.get('/', (_req, res) => {
 router.get('/:id', (req, res) => {
   const blog = blogService.getBlogById(Number(req.params.id));
 
-  if(blog) {
+  if (blog) {
     res.send(blog);
   } else {
     res.sendStatus(404);
   }
+});
+
+router.delete('/:id', (req, res) => {
+  const id = Number(req.params.id);
+  blogService.deleteBlog(id);
+
+  res.status(204).end();
 });
 
 router.post('/', (req, res) => {
@@ -24,14 +31,14 @@ router.post('/', (req, res) => {
     const { title, abstract, date } = newBlogEntry;
     const addedBlog = blogService.addBlog({ title, abstract, date });
     res.json(addedBlog);
-  } catch(error: unknown) {
+  } catch (error: unknown) {
     let errorMessage = 'Something went wrong';
     if (error instanceof Error) {
       errorMessage += error.message;
     }
     res.status(400).send(errorMessage);
   }
-  
+
 });
 
 export default router;

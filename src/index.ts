@@ -1,8 +1,10 @@
 import express, { RequestHandler } from 'express';
 import blogsRouter from './routes/blogs';
+import log from './modules/logger';
 
 const app = express();
 app.use(express.json());
+app.use(log.requestLogger);
 
 app.get('/', (_req, res) => {
   res.send('<h1>Hello World sent from express backend');
