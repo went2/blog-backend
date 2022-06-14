@@ -3,11 +3,11 @@
  * @module services/article.service
  * @author James <https://github.com/went2>
  */
-
 import articleList from '../../data/blogList.json';
 import { IArticle } from '../types/article';
 import { RequestHandler } from 'express';
 import Article from '../models/Article.model';
+import { parseUserInputArticleEntity } from '../utils';
 
 // @ts-ignore
 let articles: IArticle[] = articleList;
@@ -25,6 +25,7 @@ const articleList: RequestHandler = (_req, res) => {
 
 const articleDetail: RequestHandler = (req, res) => {
   const id = Number(req.params.id);
+
   Article.find({ id: id })
     .then(data => {
       console.log('article detail', data);
@@ -36,9 +37,28 @@ const articleDetail: RequestHandler = (req, res) => {
     });
 };
 
-const getById = (id: number): IArticle | undefined => {
-  const result = articles.find((item) => item.id === id);
-  return result;
+const articleCreate: RequestHandler = (req, res) => {
+  try {
+    // validate fields
+    const newArticle = parseUserInputArticleEntity(req.body);
+
+    // saved to db
+    Article.create({ ...newArticle })
+      .then(data => {
+        res.json(data);
+      })
+      .catch((err: unknown) => {
+        console.error('Unable to Save', err);
+        throw new Error('Unable to Save');
+      });
+
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong when saving data';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
 };
 
 const addItem = (newItem: IArticle) => {
@@ -60,7 +80,7 @@ const deleteById = (id: number): IArticle[] => {
 export default {
   articleList,
   articleDetail,
+  articleCreate,
   addItem,
-  getById,
   deleteById
 };
