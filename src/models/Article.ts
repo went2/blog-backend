@@ -35,4 +35,5 @@ const ArticleSchema = new Schema<IArticle>({
   title: { type: String, required: true }
 }, { timestamps: true });
 
-export default model<IArticle>('Article', ArticleSchema);
+const Article = model<IArticle>('Article', ArticleSchema);
+export default Article;
