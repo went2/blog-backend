@@ -3,27 +3,45 @@
     "id": 1,
     "title": "Start to create a personal blog site",
     "abstract": "from 2022-06-08",
+    "content": "fitst article",
+    "keywords": [
+      "blog",
+      "beggining"
+    ],
+    "lang": "zh",
+    "tag": {},
+    "isOriginal": 1,
     "createdAt": 1519211809934,
-    "views": 2,
-    "words": 34,
     "date": "2022-04-12"
   },
   {
     "id": 2,
     "title": "Where should I start?",
     "abstract": "design",
+    "content": "no2 article",
+    "keywords": [
+      "blog",
+      "beggining"
+    ],
+    "lang": "zh",
+    "tag": {},
+    "isOriginal": 1,
     "createdAt": 1519211839934,
-    "views": 1,
-    "words": 34,
     "date": "2021-03-12"
   },
   {
     "id": 3,
     "title": "The first day of project",
+    "content": "no3 article",
+    "keywords": [
+      "blog",
+      "beggining"
+    ],
+    "lang": "zh",
+    "tag": {},
+    "isOriginal": 1,
     "abstract": "exciting",
     "createdAt": 1519222809934,
-    "views": 0,
-    "words": 45,
     "date": "2019-03-12"
   }
 ]

@@ -1,15 +1,20 @@
+/**
+ * @file Article routes: serve '/api/articles' endpoint
+ * @module routes/articles
+ * @author James <https://github.com/went2>
+ */
 import express from 'express';
-import blogService from '../services/blogService';
+import articleService from '../services/articles.service';
 import { parseUserInputBlogEntity } from '../utils';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.send(blogService.getBlogList());
+  res.send(articleService.getList());
 });
 
 router.get('/:id', (req, res) => {
-  const blog = blogService.getBlogById(Number(req.params.id));
+  const blog = articleService.getById(Number(req.params.id));
 
   if (blog) {
     res.send(blog);
@@ -20,16 +25,19 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   const id = Number(req.params.id);
-  blogService.deleteBlog(id);
+  articleService.deleteById(id);
 
   res.status(204).end();
 });
 
 router.post('/', (req, res) => {
   try {
+    // validate fields
     const newBlogEntry = parseUserInputBlogEntity(req.body);
-    const { title, abstract, date } = newBlogEntry;
-    const addedBlog = blogService.addBlog({ title, abstract, date });
+
+    // saved to db
+    const { title, abstract, date, content } = newBlogEntry;
+    const addedBlog = articleService.addItem({ title, abstract, date, content });
     res.json(addedBlog);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong';

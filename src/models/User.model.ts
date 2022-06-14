@@ -1,12 +1,5 @@
 import { Schema, model } from "mongoose";
-
-// interface representing a document in MongoDB
-interface IUser {
-  username: string;
-  password: string;
-  email: string;
-  avatar?: string;
-}
+import { IUser } from '../types/user';
 
 // create schema
 const UserSchema = new Schema<IUser>({

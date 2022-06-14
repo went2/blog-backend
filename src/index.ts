@@ -1,5 +1,5 @@
 import express, { RequestHandler } from 'express';
-import blogsRouter from './routes/blogs';
+import articleRouter from './routes/articles';
 import log from './middlewares/logger.middleware';
 import { connect } from 'mongoose';
 import chalk from 'chalk';
@@ -15,7 +15,7 @@ app.use(log.requestLogger);
 const db = process.env.MONGO_DB as string;
 connect(db)
   .then(() => {
-    console.log(chalk.green('Connected to MongDB.'));
+    console.log(chalk.green('MongDB Connected'));
   })
   .catch(err => console.log(chalk.red('Unable to connect to MongDB', err)));
 
@@ -23,14 +23,14 @@ app.get('/', (_req, res) => {
   res.send('<h1>Hello World sent from express backend');
 });
 
-app.use('/api/blogs', blogsRouter);
+app.use('/api/articles', articleRouter);
 
 const unknownEndpoint: RequestHandler = (_req, res) => {
   res.status(404).send({ error: 'unknown endpoint' });
 };
 app.use(unknownEndpoint);
 
-const PORT = 3002;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.info(`server running on port ${PORT}`);
 });

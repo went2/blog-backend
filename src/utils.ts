@@ -1,21 +1,28 @@
-import { IUserInputBlogItem } from './types/blogs';
+import { IArticle } from './types/article';
 import { isString, isDate } from './helpers/strHelpers';
 
-type UserInputBlogEntityField = {
+type UserCreateArticleField = {
   title: unknown,
   abstract: unknown,
-  date: unknown
+  date: unknown,
+  content: unknown,
+  category: unknown,
+  lang: unknown,
+  isOriginal: unknown,
+  tag: unknown,
+  keywords: unknown
 };
 
 /**
- * 验证请求体 blog 内容的各个字段，并返回验证后的对象供下一步存储
+ * 验证请求体 blog 内容的各个字段，并返回验证后的对象
  * @param obj 
  */
-export const parseUserInputBlogEntity = (obj: UserInputBlogEntityField): IUserInputBlogItem => {
-  const newBlogEntity: IUserInputBlogItem  = {
+export const parseUserInputBlogEntity = (obj: UserCreateArticleField): IArticle => {
+  const newBlogEntity: IArticle = {
     title: parseTitle(obj.title),
     abstract: parseAbstract(obj.abstract),
-    date: parseDate(obj.date)
+    date: parseDate(obj.date),
+    content: parseContent(obj.content)
   };
 
   return newBlogEntity;
@@ -29,6 +36,13 @@ const parseTitle = (title: unknown): string => {
     throw new Error('Title should be in 65 characters' + title);
   }
   return title;
+};
+
+const parseContent = (content: unknown): string => {
+  if (!content || !isString(content)) {
+    throw new Error('Incorrect or missing content');
+  }
+  return content;
 };
 
 const parseAbstract = (abstract: unknown): string => {
