@@ -4,24 +4,15 @@
  * @author James <https://github.com/went2>
  */
 import express from 'express';
-import articleService from '../services/articles.service';
+import articleService from '../services/article.service';
 import { parseUserInputArticleEntity } from '../utils';
+
 
 const router = express.Router();
 
-router.get('/', (_req, res) => {
-  res.send(articleService.getList());
-});
+router.get('/', articleService.articleList);
 
-router.get('/:id', (req, res) => {
-  const blog = articleService.getById(Number(req.params.id));
-
-  if (blog) {
-    res.send(blog);
-  } else {
-    res.sendStatus(404);
-  }
-});
+router.get('/:id', articleService.articleDetail);
 
 router.delete('/:id', (req, res) => {
   const id = Number(req.params.id);
@@ -30,15 +21,16 @@ router.delete('/:id', (req, res) => {
   res.status(204).end();
 });
 
+// CREATE Article
 router.post('/', (req, res) => {
   try {
     // validate fields
-    const newBlogEntry = parseUserInputArticleEntity(req.body);
+    const newArticle = parseUserInputArticleEntity(req.body);
 
     // saved to db
-    const { title, abstract, date, content, keywords, lang, isOriginal, tag } = newBlogEntry;
-    const addedBlog = articleService.addItem({ title, abstract, date, content, keywords, lang, isOriginal, tag });
-    res.json(addedBlog);
+    const addedArticle = articleService.addItem(newArticle);
+
+    res.json(addedArticle);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong';
     if (error instanceof Error) {
