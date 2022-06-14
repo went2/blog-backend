@@ -14,18 +14,47 @@ type UserCreateArticleField = {
 };
 
 /**
- * 验证请求体 blog 内容的各个字段，并返回验证后的对象
+ * 验证请求体 article 内容的各个字段，返回验证后的对象
  * @param obj 
  */
-export const parseUserInputBlogEntity = (obj: UserCreateArticleField): IArticle => {
-  const newBlogEntity: IArticle = {
+export const parseUserInputArticleEntity = (obj: UserCreateArticleField): IArticle => {
+  const newArticle: IArticle = {
     title: parseTitle(obj.title),
     abstract: parseAbstract(obj.abstract),
     date: parseDate(obj.date),
-    content: parseContent(obj.content)
+    content: parseContent(obj.content),
+    category: parseNumberArray(obj.category),
+    keywords: parseStringArray(obj.keywords),
+    isOriginal: parseIsOrioginal(obj.isOriginal),
+    tag: parseNumberArray(obj.tag)
   };
 
-  return newBlogEntity;
+  return newArticle;
+};
+
+const parseNumberArray = (arr: unknown): number[] => {
+  if (arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      return arr as number[];
+    }
+  }
+  return [];
+};
+
+const parseStringArray = (arr: unknown): string[] => {
+  if (arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      return arr as string[];
+    }
+  }
+  return [];
+};
+
+const parseIsOrioginal = (isOriginal: unknown): 1 | 2 => {
+  if (isOriginal === 1 || isOriginal === 2) {
+    return isOriginal;
+  }
+  return 1;
 };
 
 const parseTitle = (title: unknown): string => {

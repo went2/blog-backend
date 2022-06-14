@@ -1,6 +1,7 @@
 import articleList from '../../data/blogList.json';
 import { IArticle } from '../types/article';
 
+// @ts-ignore
 let articles: IArticle[] = articleList;
 
 const getList = (): Array<IArticle> => {

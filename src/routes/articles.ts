@@ -5,7 +5,7 @@
  */
 import express from 'express';
 import articleService from '../services/articles.service';
-import { parseUserInputBlogEntity } from '../utils';
+import { parseUserInputArticleEntity } from '../utils';
 
 const router = express.Router();
 
@@ -33,11 +33,11 @@ router.delete('/:id', (req, res) => {
 router.post('/', (req, res) => {
   try {
     // validate fields
-    const newBlogEntry = parseUserInputBlogEntity(req.body);
+    const newBlogEntry = parseUserInputArticleEntity(req.body);
 
     // saved to db
-    const { title, abstract, date, content } = newBlogEntry;
-    const addedBlog = articleService.addItem({ title, abstract, date, content });
+    const { title, abstract, date, content, keywords, lang, isOriginal, tag } = newBlogEntry;
+    const addedBlog = articleService.addItem({ title, abstract, date, content, keywords, lang, isOriginal, tag });
     res.json(addedBlog);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong';

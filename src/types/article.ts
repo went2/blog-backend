@@ -1,18 +1,15 @@
-import { Types } from "mongoose";
-import { ICategory } from './category';
-import { ITag } from "./tag";
 
 // interface representing a document in MongoDB
 export interface IArticle {
   abstract: string;
-  category?: Types.DocumentArray<ICategory>;
+  category?: number[];
   content: string;
   date: string;
   id?: number;
-  keywords?: Types.Array<string>;
+  keywords?: string[];
   lang?: string;
-  isOriginal?: number;
-  tag?: Types.DocumentArray<ITag>;
+  isOriginal?: 1 | 2; // 1是 2否
+  tag?: number[];
   title: string;
 }
 
