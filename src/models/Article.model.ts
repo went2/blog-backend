@@ -7,18 +7,16 @@ const ArticleSchema = new Schema<IArticle>({
     type: String,
     default: ''
   },
-  category: [{ description: String, id: Number, name: String }],
+  category: [Number],
   content: { type: String, required: true },
   date: String,
   id: Number,
   keywords: [String],
   lang: { type: String, default: 'zh' },
   isOriginal: { type: Number, default: 1 },
-  tag: [{ description: String, id: Number, name: String }],
+  tag: [Number],
   title: { type: String, required: true },
-  meta: {
-    views: { type: Number, default: 0 }
-  }
+  views: { type: Number, default: 0 }
 }, { timestamps: true });
 
 const Article = model<IArticle>('Article', ArticleSchema);

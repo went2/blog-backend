@@ -10,7 +10,8 @@ type UserCreateArticleField = {
   lang: unknown,
   isOriginal: unknown,
   tag: unknown,
-  keywords: unknown
+  keywords: unknown,
+  views: unknown
 };
 
 /**
@@ -26,11 +27,28 @@ export const parseUserInputArticleEntity = (obj: UserCreateArticleField): IArtic
     category: parseNumberArray(obj.category),
     keywords: parseStringArray(obj.keywords),
     isOriginal: parseIsOrioginal(obj.isOriginal),
-    tag: parseNumberArray(obj.tag)
+    tag: parseNumberArray(obj.tag),
+    lang: parseLang(obj.lang),
+    views: parseViews(obj.views)
   };
 
   return newArticle;
 };
+
+const parseLang = (lang: unknown): string => {
+  if (lang && isString(lang)) {
+    return lang;
+  }
+  return "zh";
+};
+
+const parseViews = (views: unknown): number => {
+  if (isNumber(Number(views))) {
+    return Number(views);
+  }
+  return 0;
+};
+
 
 const parseNumberArray = (arr: unknown): number[] => {
   if (arr) {
@@ -86,6 +104,10 @@ const parseDate = (date: unknown): string => {
     throw new Error('Incorrect or missing date');
   }
   return date;
+};
+
+const isNumber = (value: unknown): value is number => {
+  return typeof value === 'number' && !isNaN(value);
 };
 
 

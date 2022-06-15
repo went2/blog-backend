@@ -12,15 +12,24 @@ const articleCreate: RequestHandler = (req, res) => {
     // validate fields
     const newArticle = parseUserInputArticleEntity(req.body);
 
-    // saved to db
-    Article.create({ ...newArticle })
-      .then(data => {
-        res.json(data);
-      })
-      .catch((err: unknown) => {
-        console.error('Unable to Save', err);
-        throw new Error('Unable to Save');
-      });
+    Article.find().then((data) => {
+      const newId = data.length;
+
+      Article.create({ ...newArticle, id: newId })
+        .then(data => {
+          const responseMessage = {
+            data: data,
+            message: 'Create Article Success',
+            status: 'success'
+          };
+          res.json(responseMessage);
+        })
+        .catch((err: unknown) => {
+          console.error('Unable to Save', err);
+          throw new Error('Unable to Save');
+        });
+
+    }).catch(err => console.log('获取全部 articles 失败', err));
 
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong when saving data';
@@ -77,14 +86,12 @@ const articleList: RequestHandler = (_req, res) => {
 const articleDetail: RequestHandler = (req, res) => {
   const id = Number(req.params.id);
 
-  Article.find({ id: id })
+  Article.findById({ id: id })
     .then(data => {
       console.log('article detail', data);
       res.send({
         ...data,
-        meta: {
-          views: data.meta.views + 1
-        }
+        views: data!.views + 1
       });
     })
     .catch(err => {
