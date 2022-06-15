@@ -42,12 +42,17 @@ const articleCreate: RequestHandler = (req, res) => {
 
 const articleUpdate: RequestHandler = (req, res) => {
   try {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     const updatedArticle = parseUserInputArticleEntity(req.body);
 
     Article.findByIdAndUpdate(id, updatedArticle)
       .then(data => {
-        res.json(data);
+        const responseMessage = {
+          message: 'update article success',
+          status: 'success',
+          data: data
+        };
+        res.json(responseMessage);
       })
       .catch((err: unknown) => {
         console.error('Database Error when updating', err);
@@ -64,10 +69,15 @@ const articleUpdate: RequestHandler = (req, res) => {
 };
 
 const articleDelete: RequestHandler = (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
   Article.findOneAndDelete({ _id: id })
     .then(() => {
-      res.status(204).end();
+      const responseMessage = {
+        message: 'delete article success',
+        data: {},
+        status: 'success'
+      };
+      res.json(responseMessage).status(204);
     })
     .catch(err => console.error(err));
 };
@@ -75,8 +85,12 @@ const articleDelete: RequestHandler = (req, res) => {
 const articleList: RequestHandler = (_req, res) => {
   Article.find()
     .then(list => {
-      console.log('Article.find()==>', list);
-      res.send(list);
+      const responseMessage = {
+        status: 'success',
+        message: 'get article list success',
+        data: list
+      };
+      res.send(responseMessage);
     })
     .catch(err => {
       console.log('fetch article list failed', err);

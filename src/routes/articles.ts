@@ -10,9 +10,9 @@ const router = express.Router();
 
 router.post('/', articleService.articleCreate);
 
-router.post('/:id/delete', articleService.articleDelete);
+router.post('/delete/:id', articleService.articleDelete);
 
-router.post('/:id/update', articleService.articleUpdate);
+router.post('/update/:id', articleService.articleUpdate);
 
 router.get('/', articleService.articleList);
 
