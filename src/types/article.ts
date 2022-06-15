@@ -11,6 +11,9 @@ export interface IArticle {
   isOriginal?: 1 | 2; // 1是 2否
   tag?: number[];
   title: string;
+  meta: {
+    views: number;
+  }
 }
 
-export type IUserCreatedArticle = Omit<IArticle, 'id' | 'category' | 'keywords' | 'lang' | 'isOriginal' | 'tag'>;
+export type IUserCreatedArticle = Omit<IArticle, 'id' | 'category' | 'keywords' | 'lang' | 'isOriginal' | 'tag' | 'meta' | 'isDelete'>;

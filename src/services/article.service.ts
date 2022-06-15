@@ -3,39 +3,9 @@
  * @module services/article.service
  * @author James <https://github.com/went2>
  */
-import articleList from '../../data/blogList.json';
-import { IArticle } from '../types/article';
 import { RequestHandler } from 'express';
 import Article from '../models/Article.model';
 import { parseUserInputArticleEntity } from '../utils';
-
-// @ts-ignore
-let articles: IArticle[] = articleList;
-
-const articleList: RequestHandler = (_req, res) => {
-  Article.find()
-    .then(list => {
-      console.log('Article.find()==>', list);
-      res.send(list);
-    })
-    .catch(err => {
-      console.log('fetch article list failed', err);
-    });
-};
-
-const articleDetail: RequestHandler = (req, res) => {
-  const id = Number(req.params.id);
-
-  Article.find({ id: id })
-    .then(data => {
-      console.log('article detail', data);
-      res.send(data);
-    })
-    .catch(err => {
-      console.log(`ERR When Fetch Detail of article ${id}`, err);
-      res.sendStatus(404);
-    });
-};
 
 const articleCreate: RequestHandler = (req, res) => {
   try {
@@ -61,26 +31,73 @@ const articleCreate: RequestHandler = (req, res) => {
   }
 };
 
-const addItem = (newItem: IArticle) => {
-  const newEntry = {
-    id: Math.max(...articles.map(d => <number>d.id)) + 1,
-    createdAt: Date.now(),
-    ...newItem
-  };
+const articleUpdate: RequestHandler = (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const updatedArticle = parseUserInputArticleEntity(req.body);
 
-  articles = [...articles, newEntry];
+    Article.findByIdAndUpdate(id, updatedArticle)
+      .then(data => {
+        res.json(data);
+      })
+      .catch((err: unknown) => {
+        console.error('Database Error when updating', err);
+        throw new Error('Database Error when updating');
+      });
 
-  return newEntry;
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
 };
 
-const deleteById = (id: number): IArticle[] => {
-  return articles.filter(blog => blog.id !== id);
+const articleDelete: RequestHandler = (req, res) => {
+  const id = Number(req.params.id);
+  Article.findOneAndDelete({ _id: id })
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch(err => console.error(err));
 };
+
+const articleList: RequestHandler = (_req, res) => {
+  Article.find()
+    .then(list => {
+      console.log('Article.find()==>', list);
+      res.send(list);
+    })
+    .catch(err => {
+      console.log('fetch article list failed', err);
+    });
+};
+
+const articleDetail: RequestHandler = (req, res) => {
+  const id = Number(req.params.id);
+
+  Article.find({ id: id })
+    .then(data => {
+      console.log('article detail', data);
+      res.send({
+        ...data,
+        meta: {
+          views: data.meta.views + 1
+        }
+      });
+    })
+    .catch(err => {
+      console.log(`ERR When Fetch Detail of article ${id}`, err);
+      res.sendStatus(404);
+    });
+};
+
 
 export default {
   articleList,
   articleDetail,
   articleCreate,
-  addItem,
-  deleteById
+  articleDelete,
+  articleUpdate
 };

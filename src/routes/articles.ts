@@ -6,21 +6,16 @@
 import express from 'express';
 import articleService from '../services/article.service';
 
-
 const router = express.Router();
+
+router.post('/', articleService.articleCreate);
+
+router.post('/:id/delete', articleService.articleDelete);
+
+router.post('/:id/update', articleService.articleUpdate);
 
 router.get('/', articleService.articleList);
 
 router.get('/:id', articleService.articleDetail);
-
-router.post('/', articleService.articleCreate);
-
-router.delete('/:id', (req, res) => {
-  const id = Number(req.params.id);
-  articleService.deleteById(id);
-
-  res.status(204).end();
-});
-
 
 export default router;
